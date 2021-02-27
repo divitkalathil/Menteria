@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "696102540795",
+    "project_id": "menteria-5ff5c",
+    "storage_bucket": "menteria-5ff5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696102540795:android:edd89ddd3496e0b16fa75e",
+        "android_client_info": {
+          "package_name": "com.satya.menteria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696102540795-sgdqcnedfovvpoi00u9crib17meni2a0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.satya.menteria",
+            "certificate_hash": "be42d4f1565cd24eb6099a6450b05fb8b1a33042"
+          }
+        },
+        {
+          "client_id": "696102540795-9svs8pf7mkcnemtans145gt1b1qt9gfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3IZf9RJUyZ8L1e5oqCMC71DmnnA2Jyrw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696102540795-9svs8pf7mkcnemtans145gt1b1qt9gfr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

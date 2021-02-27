@@ -12,6 +12,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.satya.menteria.Model.User;
+
+import java.util.Set;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -48,9 +52,10 @@ public class SignInActivity extends AppCompatActivity {
 
 //                if(!password.equals(repassword))
 //                {
-//                    repasswordBox.setError("Password do not match");
+//                    binding.repasswordBox.setError("Password do not match");
 //                    return;
 //                }
+
 
                 auth.createUserWithEmailAndPassword(emailId, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -58,7 +63,9 @@ public class SignInActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful())
                                 {
-                                    HeadToDashboard();
+                                    Intent intent = new Intent(SignInActivity.this, SetUpProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
                                 else{
                                     Toast.makeText(SignInActivity.this, "Some error occurred. Please try again.", Toast.LENGTH_SHORT).show();
@@ -76,4 +83,5 @@ public class SignInActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 }

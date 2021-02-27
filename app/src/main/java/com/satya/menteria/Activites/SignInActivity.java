@@ -3,6 +3,7 @@ package com.satya.menteria.Activites;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +26,9 @@ public class SignInActivity extends AppCompatActivity {
 
     String emailId;
     String password;
+    String repassword;
 
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,9 @@ public class SignInActivity extends AppCompatActivity {
         {
             HeadToDashboard();
         }
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Please wait...");
+        dialog.setCancelable(false);
 
 //        Get the users email and password
 //        emaiolId = binding.emailBox.getText().toString();
@@ -49,6 +55,8 @@ public class SignInActivity extends AppCompatActivity {
         binding.signupbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                password.trim();
+                repassword.trim();
 
 //                if(!password.equals(repassword))
 //                {
@@ -56,11 +64,12 @@ public class SignInActivity extends AppCompatActivity {
 //                    return;
 //                }
 
-
+                dialog.show();
                 auth.createUserWithEmailAndPassword(emailId, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                dialog.dismiss();
                                 if(task.isSuccessful())
                                 {
                                     Intent intent = new Intent(SignInActivity.this, SetUpProfileActivity.class);

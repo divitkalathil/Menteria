@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +23,8 @@ import com.google.firebase.storage.UploadTask;
 import com.satya.menteria.Model.User;
 import com.satya.menteria.R;
 import com.satya.menteria.databinding.ActivitySetUpProfileBinding;
+
+import java.util.HashMap;
 
 public class SetUpProfileActivity extends AppCompatActivity {
 
@@ -35,11 +39,17 @@ public class SetUpProfileActivity extends AppCompatActivity {
     String codeforcesRating;
     String levelPool = "level_5";
 
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySetUpProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Updating Profile...");
+        dialog.setCancelable(false);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -61,6 +71,7 @@ public class SetUpProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!ValidateFeilds()) return;
 
+                dialog.show();
                 InsertUserDataIntoFirebase();
             }
         });
@@ -77,6 +88,9 @@ public class SetUpProfileActivity extends AppCompatActivity {
                 if(data.getData()!=null)
                 {
                     selectedImageUri = data.getData();
+                    Glide.with(this).load(selectedImageUri)
+                            .placeholder(R.drawable.ic_baseline_account_circle_100)
+                            .into(binding.profileImage);
                     binding.profileImage.setImageURI(selectedImageUri);
                 }
             }
@@ -115,8 +129,12 @@ public class SetUpProfileActivity extends AppCompatActivity {
 
     private void InsertUserDataIntoFirebase(){
 
-        database.getReference().child(levelPool)
-                .push().setValue(auth.getUid())
+        HashMap<String, Object> count = new HashMap<>();
+        count.put("MenteeCount", 0);
+        database.getReference().child("levels")
+                .child(levelPool)
+                .child(auth.getUid())
+                .updateChildren(count)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -144,6 +162,7 @@ public class SetUpProfileActivity extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
+                                                dialog.dismiss();
                                                 HeadToDashboard();
                                             }
                                         });
@@ -163,6 +182,7 @@ public class SetUpProfileActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            dialog.dismiss();
                             HeadToDashboard();
                         }
                     });
